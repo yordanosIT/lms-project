@@ -1,8 +1,18 @@
-frontend/node_modules/
-backend/venv/
-backend/.venv/
-__pycache__/
-*.pyc
-.env
+# dependencies
+node_modules/
+
+# build
 dist/
 build/
+
+# logs
+*.log
+npm-debug.log*
+
+# env
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
