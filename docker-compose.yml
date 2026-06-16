@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: lms_db
+    restart: always
+    environment:
+      POSTGRES_DB: lms_db
+      POSTGRES_USER: lms_user
+      POSTGRES_PASSWORD: lms_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lms_user -d lms_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - lms_network
+
+  backend:
+    build: ./backend
+    container_name: lms_backend
+    restart: always
+    volumes:
+      - ./backend:/app
+      - backend_media:/app/media
+      - backend_static:/app/staticfiles
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=lms_db
+      - DB_USER=lms_user
+      - DB_PASSWORD=lms_password
+      - DB_PORT=5432
+      - DJANGO_DEBUG=True
+      - SECRET_KEY=django-insecure-brothers-it-lms-super-secret-key-2026
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - lms_network
+
+  frontend:
+    build: ./frontend
+    container_name: lms_frontend
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://backend:8000/api
+    depends_on:
+      - backend
+    networks:
+      - lms_network
+    command: sh -c "npm run dev -- --host 0.0.0.0"
+
+volumes:
+  postgres_data:
+  backend_media:
+  backend_static:
+
+networks:
+  lms_network:
+    driver: bridge
