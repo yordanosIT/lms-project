@@ -10,6 +10,6 @@ Docker & Docker Compose
 
 Run the following commands step by step:
 
-git clone https://github.com/lijuniwawanah-jpg/lms-project.git
+git clone https://github.com/yordanosIT/lms-project.git
 cd lms-project
 docker compose up --build
