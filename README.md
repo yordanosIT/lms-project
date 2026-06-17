@@ -6,6 +6,8 @@ This is a full-stack Learning Management System (LMS) built with:
 - Database: PostgreSQL
 - Docker & Docker Compose
 
+# Frontend: http://localhost:3000/
+# Backend: http://localhost:8000/
 ---
 
 ## 🚀 How to Run the Project
