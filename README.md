@@ -15,4 +15,5 @@ Run the following commands step by step:
 ```bash
 git clone https://github.com/yordanosIT/lms-project.git
 cd lms-project
-docker compose up --build
+docker compose build --no-cache
+docker compose up -d
